@@ -30,25 +30,28 @@ object CoordinatesGenerator {
 
     val coordinates = new ListBuffer[Tuple2[Int, Int]]
 
+    def addCoordinate(x: Int, y: Int) {
+      coordinates += new Tuple2[Int, Int](x, y)
+    }
+
     direction match {
       case Left =>
         for (x <- 0 until Board.size; y <- 0 until Board.size) {
-          coordinates += new Tuple2[Int, Int](x, y)
-
-      }
+          addCoordinate(x, y)
+        }
       case Right => {
         for (x <- 0 until Board.size; y <- Board.size - 1 to 0 by -1) {
-          coordinates += new Tuple2[Int, Int](x, y)
+          addCoordinate(x, y)
         }
       }
       case Up => {
         for (y <- 0 until Board.size; x <- 0 until Board.size) {
-          coordinates += new Tuple2[Int, Int](x, y)
+          addCoordinate(x, y)
         }
       }
       case Down => {
         for (y <- 0 until Board.size; x <- Board.size - 1 to 0 by -1) {
-          coordinates += new Tuple2[Int, Int](x, y)
+          addCoordinate(x, y)
         }
       }
     }
