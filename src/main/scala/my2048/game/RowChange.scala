@@ -23,4 +23,19 @@ package my2048.game
  */
 class RowChange(val row: Seq[Cell], val score: Int, val changed: Boolean) {
 
+  def canEqual(other: Any): Boolean = other.isInstanceOf[RowChange]
+
+  override def equals(other: Any): Boolean = other match {
+    case that: RowChange =>
+      (that canEqual this) &&
+        row == that.row &&
+        score == that.score &&
+        changed == that.changed
+    case _ => false
+  }
+
+  override def hashCode(): Int = {
+    val state = Seq(row, score, changed)
+    state.map(_.hashCode()).foldLeft(0)((a, b) => 31 * a + b)
+  }
 }
