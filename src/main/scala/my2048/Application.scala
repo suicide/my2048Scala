@@ -16,18 +16,13 @@
 
 package my2048
 
-import my2048.game.{Direction, CoordinatesGenerator, Board}
-import scala.collection.mutable.ListBuffer
 
 /**
  * TODO: Comment
  *
  * @author Patrick Sy (patrick.sy@get-it.us)
  */
-object Application extends App{
+object Application extends App {
 
-  println("Hello World")
-
-  println(CoordinatesGenerator.coordinates(Direction.Left))
-
+  new GameHandler().play()
 }

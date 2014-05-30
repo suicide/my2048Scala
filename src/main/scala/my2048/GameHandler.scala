@@ -16,11 +16,57 @@
 
 package my2048
 
+import my2048.game.Direction._
+import my2048.output.BoardRenderer
+import my2048.game.BoardHandler
+import java.util.Scanner
+
 /**
  * TODO: Comment
  *
  * @author Patrick Sy (patrick.sy@get-it.us)
  */
 class GameHandler {
+
+  def play(): Unit = {
+
+    val renderer = new BoardRenderer
+    val boardHandler = new BoardHandler
+    val scanner = new Scanner(System.in)
+
+    var score = 0
+
+    renderer.render(boardHandler.board, score)
+
+    while (true) {
+      println("What direction now?")
+      val key = scanner.next()
+
+      var d = mapDirection(key)
+
+      var change = boardHandler.move(d)
+
+      if (change.changed) {
+        score += change.score
+
+        renderer.render(change.board, score)
+      }
+    }
+
+  }
+
+  private def mapDirection(key: String): Direction = {
+
+    key match {
+      case "w" => Up
+      case "a" => Left
+      case "s" => Down
+      case "d" => Right
+      case _ => throw new InvalidInputException(key + " does not match a direction")
+    }
+
+  }
+
+  private class InvalidInputException(msg: String) extends RuntimeException(msg)
 
 }

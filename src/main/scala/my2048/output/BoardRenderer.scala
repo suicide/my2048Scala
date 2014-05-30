@@ -16,11 +16,34 @@
 
 package my2048.output
 
+import my2048.game.Board
+
 /**
  * TODO: Comment
  *
  * @author Patrick Sy (patrick.sy@get-it.us)
  */
 class BoardRenderer {
+
+  private val separator = "-------------------------------------"
+
+  def render(board: Board, score: Int): Unit = {
+
+    println(separator)
+
+    for (x <- 0 until Board.size) {
+      val row = Array.fill[Integer](Board.size) {0}
+      for (y <- 0 until Board.size) {
+        row(y) = board.get(x, y).value
+      }
+
+      // varargs hint
+      printf("| %6d | %6d | %6d | %6d |\n", row : _*)
+      println(separator)
+    }
+
+    println("Score: " + score)
+
+  }
 
 }

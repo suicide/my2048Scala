@@ -17,7 +17,6 @@
 package my2048.game
 
 import org.specs2.mutable.Specification
-import CellFactory._
 
 /**
  * TODO: Comment

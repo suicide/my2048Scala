@@ -18,6 +18,7 @@ package my2048.game
 
 import Direction._
 import scala.collection.mutable.ListBuffer
+import scala.util.Random
 
 /**
  * TODO: Comment
@@ -31,6 +32,26 @@ class BoardHandler {
   val rowHandler = new RowHandler
 
   private def spawnRandom(board: Board): Board = {
+
+    val emptyFields = new ListBuffer[Tuple2[Int, Int]]
+
+    for (x <- 0 until Board.size) {
+      for (y <- 0 until Board.size) {
+        val cell = board.get(x, y)
+
+        if (cell.value == 0) {
+          emptyFields += new Tuple2(x, y)
+        }
+      }
+    }
+    val emptyFieldsList = emptyFields.toList
+
+    val r = new Random()
+    val index = r.nextInt(emptyFieldsList.size)
+    val value = (r.nextInt(2) + 1) * 2
+
+    board.set(emptyFieldsList(index)._1, emptyFieldsList(index)._2, CellFactory.getCell(value))
+
     board
   }
 
@@ -39,7 +60,8 @@ class BoardHandler {
     val change = doMove(board, direction)
 
     if (change.changed) {
-      return new Change(spawnRandom(board), change.score, change.changed)
+      board = spawnRandom(change.board)
+      return new Change(board, change.score, change.changed)
     } else {
       change
     }
