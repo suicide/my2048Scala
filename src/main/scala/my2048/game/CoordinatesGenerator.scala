@@ -30,7 +30,7 @@ object CoordinatesGenerator {
 
     val coordinates = new ListBuffer[Tuple2[Int, Int]]
 
-    val addCoordinate = (x: Int, y: Int) => coordinates += new Tuple2[Int, Int](x, y)
+    val addCoordinate = (x: Int, y: Int) => coordinates += ((x, y))
 
     direction match {
       case Left =>

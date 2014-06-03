@@ -25,7 +25,7 @@ import scala.collection.mutable.ListBuffer
  */
 class RowHandler {
 
-  def foldRow(row: Seq[Cell]): RowChange = {
+  def foldRow(row: Seq[Cell]): (Seq[Cell], Int, Boolean) = {
 
     val newRow = new ListBuffer[Cell]
 
@@ -61,7 +61,7 @@ class RowHandler {
 
     val newRowList = newRow.toList
 
-    new RowChange(newRowList, score, !row.equals(newRowList))
+    (newRowList, score, !row.equals(newRowList))
   }
 
 }

@@ -40,7 +40,7 @@ class BoardHandler {
         val cell = board.get(x, y)
 
         if (cell.value == 0) {
-          emptyFields += new Tuple2(x, y)
+          emptyFields += ((x, y))
         }
       }
     }
@@ -55,20 +55,20 @@ class BoardHandler {
     board
   }
 
-  def move(direction: Direction): Change = {
+  def move(direction: Direction): (Board, Int, Boolean) = {
 
-    val change = doMove(board, direction)
+    val (newBoard, score, changed) = doMove(board, direction)
 
-    if (change.changed) {
-      board = spawnRandom(change.board)
-      return new Change(board, change.score, change.changed)
+    if (changed) {
+      board = spawnRandom(newBoard)
+      return (board, score, changed)
     } else {
-      change
+      (newBoard, score, changed)
     }
 
   }
 
-  private def doMove(board: Board, direction: Direction): Change = {
+  private def doMove(board: Board, direction: Direction): (Board, Int, Boolean) = {
     val newBoard = new Board
 
     val coordinates = CoordinatesGenerator.coordinates(direction)
@@ -84,18 +84,17 @@ class BoardHandler {
         rowBuffer += board.get(coordinate._1, coordinate._2)
       }
 
-      val rowChange = rowHandler.foldRow(rowBuffer.toList)
-      val newRow = rowChange.row
-      score += rowChange.score
-      changed |= rowChange.changed
+      val (newRow, rowScore, rowChanged) = rowHandler.foldRow(rowBuffer.toList)
+      score += rowScore
+      changed |= rowChanged
 
       for (j <- 0 until Board.size) {
-        val coordinate = coordinates(i * Board.size + j)
-        newBoard.set(coordinate._1, coordinate._2, newRow(j))
+        val (x, y) = coordinates(i * Board.size + j)
+        newBoard.set(x, y, newRow(j))
       }
     }
 
-    new Change(newBoard, score, changed)
+    (newBoard, score, changed)
   }
 
 

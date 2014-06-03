@@ -44,12 +44,12 @@ class GameHandler {
 
       var d = mapDirection(key)
 
-      var change = boardHandler.move(d)
+      var (board, moveScore, changed) = boardHandler.move(d)
 
-      if (change.changed) {
-        score += change.score
+      if (changed) {
+        score += moveScore
 
-        renderer.render(change.board, score)
+        renderer.render(board, score)
       }
     }
 
