@@ -28,33 +28,22 @@ object CoordinatesGenerator {
 
   def coordinates(direction: Direction): Seq[Tuple2[Int, Int]] = {
 
-    val coordinates = new ListBuffer[Tuple2[Int, Int]]
-
-    val addCoordinate = (x: Int, y: Int) => coordinates += ((x, y))
+    val countUp = 0 until Board.size
+    val countDown = Board.size - 1 to 0 by -1
 
     direction match {
       case Left =>
-        for (x <- 0 until Board.size; y <- 0 until Board.size) {
-          addCoordinate(x, y)
-        }
+        for (x <- countUp; y <- countUp) yield (x,y)
       case Right => {
-        for (x <- 0 until Board.size; y <- Board.size - 1 to 0 by -1) {
-          addCoordinate(x, y)
-        }
+        for (x <- countUp; y <- countDown) yield (x,y)
       }
       case Up => {
-        for (y <- 0 until Board.size; x <- 0 until Board.size) {
-          addCoordinate(x, y)
-        }
+        for (y <- countUp; x <- countUp) yield (x,y)
       }
       case Down => {
-        for (y <- 0 until Board.size; x <- Board.size - 1 to 0 by -1) {
-          addCoordinate(x, y)
-        }
+        for (y <- countUp; x <- countDown) yield (x,y)
       }
     }
-
-    coordinates.toList
   }
 
 }
