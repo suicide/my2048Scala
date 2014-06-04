@@ -55,9 +55,7 @@ class RowHandler {
     }
 
     // fill up with 0's
-    for (i <- 0 until Board.size - newRow.size) {
-      newRow = newRow :+ CellFactory.getCell(0)
-    }
+    newRow = newRow ++ (for (i <- 0 until Board.size - newRow.size) yield CellFactory.getCell(0))
 
 
     (newRow, score, !row.equals(newRow))

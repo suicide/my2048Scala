@@ -27,30 +27,26 @@ import scala.util.Random
  */
 class BoardHandler {
 
+  val r = new Random()
+
   var board = spawnRandom(spawnRandom(new Board))
 
   val rowHandler = new RowHandler
 
   private def spawnRandom(board: Board): Board = {
 
-    val emptyFields = new ListBuffer[Tuple2[Int, Int]]
+    val emptyFields = for {
+      x <- 0 until Board.size
+      y <- 0 until Board.size
+      if board.get(x,y).value == 0
+    } yield (x, y)
 
-    for (x <- 0 until Board.size) {
-      for (y <- 0 until Board.size) {
-        val cell = board.get(x, y)
-
-        if (cell.value == 0) {
-          emptyFields += ((x, y))
-        }
-      }
-    }
-    val emptyFieldsList = emptyFields.toList
-
-    val r = new Random()
-    val index = r.nextInt(emptyFieldsList.size)
+    val index = r.nextInt(emptyFields.size)
     val value = (r.nextInt(2) + 1) * 2
 
-    board.set(emptyFieldsList(index)._1, emptyFieldsList(index)._2, CellFactory.getCell(value))
+    val (x, y) = emptyFields(index)
+
+    board.set(x, y, CellFactory.getCell(value))
 
     board
   }
@@ -77,14 +73,13 @@ class BoardHandler {
     var changed = false
 
     for (i <- 0 until Board.size) {
-      val rowBuffer = new ListBuffer[Cell]
 
-      for (j <- 0 until Board.size) {
-        val coordinate = coordinates(i * Board.size + j)
-        rowBuffer += board.get(coordinate._1, coordinate._2)
-      }
+      val row = (0 until Board.size).map(j => {
+        val (x, y) = coordinates(i * Board.size + j)
+        board.get(x, y)
+      })
 
-      val (newRow, rowScore, rowChanged) = rowHandler.foldRow(rowBuffer.toList)
+      val (newRow, rowScore, rowChanged) = rowHandler.foldRow(row)
       score += rowScore
       changed |= rowChanged
 
@@ -96,7 +91,6 @@ class BoardHandler {
 
     (newBoard, score, changed)
   }
-
 
 
 }

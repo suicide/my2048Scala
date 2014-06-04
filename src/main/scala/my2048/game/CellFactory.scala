@@ -23,20 +23,15 @@ package my2048.game
  */
 object CellFactory {
 
-  private val emptyCell = new EmptyCell
-
   def getCell(value: Int): Cell = {
-    var cell: Cell = null
 
     if (value.equals(0)) {
-      cell = emptyCell
+      EmptyCell
     } else {
-      cell = new ValueCell(value)
+      new ValueCell(value)
     }
 
-    cell
   }
-
 
   private class ValueCell(val value: Int) extends Cell {
 
@@ -55,7 +50,7 @@ object CellFactory {
     }
   }
 
-  private class EmptyCell extends Cell {
+  private object EmptyCell extends Cell {
     val value = 0;
   }
 
