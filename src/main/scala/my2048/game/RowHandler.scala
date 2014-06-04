@@ -27,23 +27,23 @@ class RowHandler {
 
   def foldRow(row: Seq[Cell]): (Seq[Cell], Int, Boolean) = {
 
-    val newRow = new ListBuffer[Cell]
+    var newRow: Seq[Cell] = Vector()
 
     var previousCell: Cell = null
     var score = 0
 
-    for (cell <- row.filter(cell => cell.value != 0)) {
+    for (cell <- row if cell.value != 0) {
 
       if (cell.equals(previousCell)) {
         // merge
         val newCell = CellFactory.getCell(cell.value * 2)
-        newRow += newCell
+        newRow = newRow :+ newCell
         score += newCell.value
 
         previousCell = null
       } else {
         if (previousCell != null) {
-          newRow += previousCell
+          newRow = newRow :+ previousCell
         }
         previousCell = cell
       }
@@ -51,17 +51,16 @@ class RowHandler {
     }
 
     if (previousCell != null) {
-      newRow += previousCell
+      newRow = newRow :+ previousCell
     }
 
     // fill up with 0's
     for (i <- 0 until Board.size - newRow.size) {
-      newRow += CellFactory.getCell(0)
+      newRow = newRow :+ CellFactory.getCell(0)
     }
 
-    val newRowList = newRow.toList
 
-    (newRowList, score, !row.equals(newRowList))
+    (newRow, score, !row.equals(newRow))
   }
 
 }
